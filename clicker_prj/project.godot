@@ -1,0 +1,31 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="clicker_prj"
+run/main_scene="uid://c5knyt3vaje7o"
+config/features=PackedStringArray("4.4", "GL Compatibility")
+config/icon="res://assets/icon.svg"
+
+[display]
+
+window/size/viewport_width=200
+window/size/viewport_height=100
+window/size/window_width_override=800
+window/size/window_height_override=600
+window/stretch/mode="canvas_items"
+window/vsync/vsync_mode=0
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/anisotropic_filtering_level=0
