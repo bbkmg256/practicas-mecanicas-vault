@@ -62,7 +62,11 @@ func _process(delta: float) -> void:
 		print("[LOG] > Un monstruo ah aparecido, destruyelo!")
 		self._instanciar_entidad()
 	# NOTE: ESTABLECE LA CANTIDAD DE VIDA DEL MOSNTRUO EN EL HUD
-	self.etiqueta_vida.text = str(self.instancia_mons.get_vida_monstruo())
+	# HACK: ESTO SE PODRÍA HACER DE OTRA MANERA
+	if self.instancia_mons.get_vida_monstruo() < 0:
+		self.etiqueta_vida.text = str(0)
+	else:
+		self.etiqueta_vida.text = str(self.instancia_mons.get_vida_monstruo())
 	# BUG: LA ANIMACIÓN DE MUERTE NO SE REPRODUCE (SOLUCINADO)
 	if self.instancia_mons != null and not self.instancia_mons.sigue_vivo():
 		self.instancia_mons.animacion_muerto()
