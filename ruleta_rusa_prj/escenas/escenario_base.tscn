@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://gawaeefxsyid"]
+
+[ext_resource type="Script" uid="uid://cn1u056kmwih8" path="res://scripts/escenario_base_script.gd" id="1_aibai"]
+
+[node name="escenario_base" type="Node2D"]
+script = ExtResource("1_aibai")
