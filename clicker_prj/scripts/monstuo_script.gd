@@ -13,6 +13,7 @@ signal finalizado
 var vida_monstruo : int
 # @onready var animation_player = $AnimationPlayer
 var animacion_monstruo : AnimationPlayer
+var prob_critico : float
 
 # GETTERS/SETTERS
 func get_vida_monstruo() -> int:
@@ -67,8 +68,26 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 				self.animacion_monstruo.stop()
 				self.animacion_monstruo.seek(0.0, true)
 			self.animacion_monstruo.play("pop_anim")
-			self.vida_monstruo -= 1
-			print("[LOG] > Vida del monstruo -> " + str(self.vida_monstruo)) # LOG
+			
+			#self.prob_critico = randf()
+			#print(self.prob_critico)
+			#print(float(1)/2)
+			# NOTE: EN GODOT, LAS DIVISIONES SE TRATAN COMO ENTERAS, SE DEBE EXPLICITAR CON FLOTANTES
+			# SI SE ESPERA RESULTADOS FLOTANTES, DE LO COTRARIO GODOT DEVUELVE UN ENTERO.
+			#print(randf() <= float(1)/2)
+			# NOTE: PEQUEÑO SISTEMAS DE PROBABILIDAD DE DAÑO CRITICO
+			if randf() <= float(1)/10:
+				self.vida_monstruo -= 10
+				print("[LOG] Critico de 10 PD aplicado!")
+			else:
+				self.vida_monstruo -= 1
+			
+			# HACK: ESTO ESTÁ MAL, PERO PARA PROBAR SIRVE XD
+			if self.vida_monstruo < 0:
+				print("[LOG] > Vida del monstruo -> " + str(0)) # LOG
+			else:
+				print("[LOG] > Vida del monstruo -> " + str(self.vida_monstruo)) # LOG
+			
 			# HACK: MALAZO, PERO DESPUES VEO QUE ONDA
 			if self.vida_monstruo <= 0:
 				print("[LOG] > Monstruo muerto!")

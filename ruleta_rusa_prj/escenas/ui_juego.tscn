@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://bo2e1vvnisp34"]
+
+[ext_resource type="Script" uid="uid://dob8jjjwwoxa1" path="res://scripts/ui_juego_script.gd" id="1_4id84"]
+
+[node name="UI_juego" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4id84")
+
+[node name="cargar_bala" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 185.0
+offset_bottom = 67.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="cargar_bala"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 23.0
+offset_right = 158.0
+offset_bottom = 50.0
+text = "Cargar una bala"
+
+[node name="girar_tambor_arma" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 201.0
+offset_right = 387.0
+offset_bottom = 67.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="girar_tambor_arma"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 20.0
+offset_right = 180.0
+offset_bottom = 43.0
+text = "Girar tambor del arma"
+
+[node name="cantidad_balas" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 405.0
+offset_top = 1.0
+offset_right = 591.0
+offset_bottom = 68.0
+metadata/_edit_group_ = true
+
+[node name="n_balas" type="Label" parent="cantidad_balas"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 23.0
+offset_right = 159.0
+offset_bottom = 46.0
+text = "balas"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="cantidad_balas"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 90.0
+offset_bottom = 47.0
+text = "balas:"
+horizontal_alignment = 1
+
+[connection signal="gui_input" from="cargar_bala" to="." method="_on_cargar_bala_gui_input"]
+[connection signal="gui_input" from="girar_tambor_arma" to="." method="_on_girar_tambor_arma_gui_input"]

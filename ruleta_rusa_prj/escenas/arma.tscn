@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://dc2hmwd1w6g6w"]
+
+[ext_resource type="Script" uid="uid://cmw6apskxnrnd" path="res://scripts/arma_script.gd" id="1_t1awj"]
+[ext_resource type="Texture2D" uid="uid://dgjwxjqufplpl" path="res://assets/arma.png" id="1_tn6ss"]
+[ext_resource type="AudioStream" uid="uid://bmtj20rmao2we" path="res://sounds/pistol-sonido.mp3" id="3_t1m4a"]
+[ext_resource type="AudioStream" uid="uid://bfouuq74xv1sd" path="res://sounds/pistola-click-sonido(cut).mp3" id="4_50orj"]
+[ext_resource type="AudioStream" uid="uid://d0hyrwfp1g1ur" path="res://sounds/carga-pistola-sonido.mp3" id="5_qieh0"]
+[ext_resource type="AudioStream" uid="uid://dvatqcs2miasx" path="res://sounds/giro_tambor_arma_sonido(cut).mp3" id="6_qrbeq"]
+[ext_resource type="AudioStream" uid="uid://bm75lp4mb5v8m" path="res://sounds/sonido-aturdidor.mp3" id="7_oqv4j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tn6ss"]
+size = Vector2(593.333, 266.667)
+
+[node name="arma" type="Node2D"]
+script = ExtResource("1_t1awj")
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_tn6ss")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(0.3, 0.3)
+shape = SubResource("RectangleShape2D_tn6ss")
+
+[node name="sonido_disparo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_t1m4a")
+volume_db = -2.0
+
+[node name="sonido_click_arma" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_50orj")
+
+[node name="sonido_carga_arma" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_qieh0")
+
+[node name="sonido_giro_tambor_arma" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_qrbeq")
+volume_db = -3.0
+
+[node name="sonido_aturdidor" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_oqv4j")
+volume_db = -15.0
+
+[node name="Destello_disparo" type="AnimationPlayer" parent="."]
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
