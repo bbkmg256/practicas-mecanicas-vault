@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dc2hmwd1w6g6w"]
+[gd_scene load_steps=12 format=3 uid="uid://dc2hmwd1w6g6w"]
 
 [ext_resource type="Script" uid="uid://cmw6apskxnrnd" path="res://scripts/arma_script.gd" id="1_t1awj"]
 [ext_resource type="Texture2D" uid="uid://dgjwxjqufplpl" path="res://assets/arma.png" id="1_tn6ss"]
@@ -10,6 +10,67 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tn6ss"]
 size = Vector2(593.333, 266.667)
+
+[sub_resource type="Animation" id="Animation_oqv4j"]
+resource_name = "disparo_anim"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Area2D/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.01, 0.05, 0.08, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.20944, 0.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.01, 0.05, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-10, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_x0yld"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Area2D/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gwtws"]
+_data = {
+&"RESET": SubResource("Animation_x0yld"),
+&"disparo_anim": SubResource("Animation_oqv4j")
+}
 
 [node name="arma" type="Node2D"]
 script = ExtResource("1_t1awj")
@@ -43,6 +104,9 @@ volume_db = -3.0
 stream = ExtResource("7_oqv4j")
 volume_db = -15.0
 
-[node name="Destello_disparo" type="AnimationPlayer" parent="."]
+[node name="anim_disparo" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_gwtws")
+}
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
