@@ -1,0 +1,78 @@
+[gd_scene load_steps=12 format=3 uid="uid://2wjwj5sxn4my"]
+
+[ext_resource type="Texture2D" uid="uid://i84n8rbbx8xm" path="res://assets/animated-tiles.png" id="1_6hw88"]
+[ext_resource type="Script" uid="uid://cs6lfkxu7k3ui" path="res://scripts/bola_de_fuego_script.gd" id="1_k2vlo"]
+[ext_resource type="AudioStream" uid="uid://clpd3nfqdmi81" path="res://sonidos/8bits-fx-buble(cut).wav" id="3_tsqw1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k2vlo"]
+atlas = ExtResource("1_6hw88")
+region = Rect2(0, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tsqw1"]
+atlas = ExtResource("1_6hw88")
+region = Rect2(32, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pvl3"]
+atlas = ExtResource("1_6hw88")
+region = Rect2(64, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76wbg"]
+atlas = ExtResource("1_6hw88")
+region = Rect2(96, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wk302"]
+atlas = ExtResource("1_6hw88")
+region = Rect2(128, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aleud"]
+atlas = ExtResource("1_6hw88")
+region = Rect2(160, 288, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yap7a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k2vlo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tsqw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6pvl3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76wbg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wk302")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aleud")
+}],
+"loop": true,
+"name": &"anim_bola_fuego",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6hw88"]
+radius = 5.0
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_k2vlo")
+metadata/_edit_group_ = true
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+sprite_frames = SubResource("SpriteFrames_yap7a")
+animation = &"anim_bola_fuego"
+frame_progress = 0.467837
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CircleShape2D_6hw88")
+
+[node name="fx_8bit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_tsqw1")
+volume_db = -15.0
