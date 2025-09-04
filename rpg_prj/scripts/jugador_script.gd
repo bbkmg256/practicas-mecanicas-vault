@@ -51,27 +51,28 @@ var _tiempo_espera_hechizo : Timer
 
 # METODOS
 func _ready() -> void:
-	self._nodo_CB = $CharacterBody2D
+	self._nodo_CB = $jugador_body_2D
 	self._vida = 100
-	self._velocidad_movimiento = 10000
+	self._velocidad_movimiento = 200
 	self._direccion_mov = Vector2()
 	self._direccion_ataque = Vector2()
-	self._sprite = $CharacterBody2D/Sprite2D
-	self._anim_pj = $CharacterBody2D/anim_jugador
+	self._sprite = $jugador_body_2D/Sprite2D
+	self._anim_pj = $anim_jugador
 	self._tiempo_espera_hechizo = $Timer
 
 func get_direccion_ataque() -> Vector2:
 	return self._direccion_ataque
 
 # NOTE: RETORNA LA POSICION GLOBAL (NO DEPENDE DEL PADRE) DEL NODO HIJO "CharacterBody2D"
-func get_posision_pj() -> Vector2:
+func get_posicion_pj() -> Vector2:
 	return self._nodo_CB.global_position
 
 # NOTE: LOGS
 func _imprimir_logs() -> void:
-	#print("[LOG] DIRECCION MOV. -> " + str(self._direccion_mov))
-	print("[LOG] DIRECCION ATQ. -> " + str(self._direccion_ataque))
-	#print("[LOG] PROPIEDAD VELOCITY -> " + str(self.velocity))
+	# print("[LOG] DIRECCION MOV. -> " + str(self._direccion_mov))
+	# print("[LOG] DIRECCION ATQ. -> " + str(self._direccion_ataque))
+	# print("[LOG] PROPIEDAD VELOCITY -> " + str(self.velocity))
+	pass
 
 # NOTE: INVIERTE HORIZONTALMENTE EL SPRITE
 func _rotar_sprite(dir: float) -> void:
@@ -89,17 +90,17 @@ func _reproducir_animacion_caminar(dir : Vector2) -> void:
 	# HACK: FUNCIONA, PERO NO ME DEJA CONFORME
 	if dir != Vector2(0,0):
 		if self._anim_pj.current_animation == "anim_idle":
-			self._anim_pj.seek(0.0)
 			self._anim_pj.stop()
+			self._anim_pj.seek(0.0)
 		self._anim_pj.play("anim_caminar")
 		return
 	if self._anim_pj.current_animation == "anim_caminar":
-		self._anim_pj.seek(0.0)
 		self._anim_pj.stop()
+		self._anim_pj.seek(0.0)
 	self._anim_pj.play("anim_idle")
 
 # NOTE: MUEVE AL PERSONAJE
-func _mover_jugador(delta : float) -> void:
+func _mover_jugador() -> void:
 	# NOTE: DIRECCIONES PARA EJE X
 	self._direccion_mov.x = Input.get_axis("ui_left", "ui_right")
 	# NOTE: DIRECCIONES PARA EJE Y
@@ -109,7 +110,7 @@ func _mover_jugador(delta : float) -> void:
 	self._direccion_mov = self._direccion_mov.normalized()
 	
 	# NOTE: PROPIEDADES EXCLUSIVA DE LOS NODOS QUE HEREDAN DE "PhysicsBody2D"
-	self._nodo_CB.velocity = self._velocidad_movimiento * self._direccion_mov * delta
+	self._nodo_CB.velocity = self._velocidad_movimiento * self._direccion_mov
 	self._nodo_CB.move_and_slide()
 
 # NOTE: LANZA ATAQUE
@@ -120,7 +121,8 @@ func _lanzar_hechizo() -> void:
 	# NOTE: DIRECCIONES PARA EJE Y
 	self._direccion_ataque.y = Input.get_axis("MOVER_ARRIBA_W", "MOVER_ABAJO_S")
 	if self._tiempo_espera_hechizo.is_stopped():
-		self._tiempo_espera_hechizo.start()
+		# NOTE: REINICIA EL TIMER
+		self._tiempo_espera_hechizo.start(0.0)
 
 # NOTE: EL TIMER DE LANZAMIENTO DEL HECHIZO, SE PARA SI NO SE ESTA PRESIONANDO NADA
 func _on_timer_timeout() -> void:
@@ -133,10 +135,11 @@ func _on_timer_timeout() -> void:
 # NOTE: METODO PRINCIPAL DE PROCESO DE FÍSICAS (EN BUCLE)
 func _physics_process(delta: float) -> void:
 	#self._imprimir_logs()
-	self._mover_jugador(delta)
+	self._mover_jugador()
 	self._rotar_sprite(self._direccion_mov.x)
 	self._reproducir_animacion_caminar(self._direccion_mov)	
 	self._lanzar_hechizo()
+
 
 
 

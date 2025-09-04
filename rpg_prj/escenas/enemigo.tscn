@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3 uid="uid://bl10x1fiuovlx"]
+
+[ext_resource type="Texture2D" uid="uid://bl46hyfwutmh7" path="res://assets/monsters.png" id="1_sms58"]
+[ext_resource type="Script" uid="uid://ddwqs5outjp4v" path="res://scripts/enemigo_script.gd" id="1_uhebs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhebs"]
+size = Vector2(30, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_743j8"]
+size = Vector2(19, 25)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uhebs"]
+radius = 341.072
+
+[sub_resource type="Animation" id="Animation_uhebs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemigo_body_2D/Sprite2D:skew")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_743j8"]
+resource_name = "anim_caminar"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemigo_body_2D/Sprite2D:skew")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.174533]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_743j8"]
+_data = {
+&"RESET": SubResource("Animation_uhebs"),
+&"anim_caminar": SubResource("Animation_743j8")
+}
+
+[node name="enemigo" type="Node2D"]
+script = ExtResource("1_uhebs")
+
+[node name="enemigo_body_2D" type="CharacterBody2D" parent="."]
+collision_layer = 8
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="enemigo_body_2D"]
+position = Vector2(1, -1)
+texture = ExtResource("1_sms58")
+region_enabled = true
+region_rect = Rect2(32, 160, 32, 32)
+
+[node name="colision_entorno" type="CollisionShape2D" parent="enemigo_body_2D"]
+position = Vector2(1, -1.5)
+shape = SubResource("RectangleShape2D_uhebs")
+
+[node name="Area2D2" type="Area2D" parent="enemigo_body_2D"]
+collision_layer = 0
+collision_mask = 4
+metadata/_edit_group_ = true
+
+[node name="colision_golpe" type="CollisionShape2D" parent="enemigo_body_2D/Area2D2"]
+position = Vector2(2.5, -1.5)
+shape = SubResource("RectangleShape2D_743j8")
+
+[node name="Area2D" type="Area2D" parent="enemigo_body_2D"]
+position = Vector2(0, -1)
+collision_layer = 0
+collision_mask = 4
+metadata/_edit_group_ = true
+
+[node name="area_vision" type="CollisionShape2D" parent="enemigo_body_2D/Area2D"]
+shape = SubResource("CircleShape2D_uhebs")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_743j8")
+}
+
+[connection signal="body_entered" from="enemigo_body_2D/Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="enemigo_body_2D/Area2D" to="." method="_on_area_2d_body_exited"]

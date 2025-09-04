@@ -98,24 +98,26 @@ _data = {
 &"anim_idle": SubResource("Animation_xutah")
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="jugador" type="Node2D"]
 script = ExtResource("1_jpodt")
 metadata/_edit_group_ = true
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-position = Vector2(2, 0)
+[node name="jugador_body_2D" type="CharacterBody2D" parent="."]
+collision_layer = 2
+metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+[node name="Sprite2D" type="Sprite2D" parent="jugador_body_2D"]
 texture_filter = 1
 texture = ExtResource("1_tml57")
 region_enabled = true
 region_rect = Rect2(32, 128, 32, 32)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="jugador_body_2D"]
 position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_tml57")
 
-[node name="anim_jugador" type="AnimationPlayer" parent="CharacterBody2D"]
+[node name="anim_jugador" type="AnimationPlayer" parent="."]
+root_node = NodePath("../jugador_body_2D")
 libraries = {
 &"": SubResource("AnimationLibrary_xutah")
 }
