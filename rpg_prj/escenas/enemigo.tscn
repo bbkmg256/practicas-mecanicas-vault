@@ -3,14 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://bl46hyfwutmh7" path="res://assets/monsters.png" id="1_sms58"]
 [ext_resource type="Script" uid="uid://ddwqs5outjp4v" path="res://scripts/enemigo_script.gd" id="1_uhebs"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhebs"]
-size = Vector2(30, 29)
+[sub_resource type="CircleShape2D" id="CircleShape2D_uhebs"]
+radius = 178.07
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_743j8"]
 size = Vector2(19, 25)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_uhebs"]
-radius = 341.072
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhebs"]
+size = Vector2(30, 29)
 
 [sub_resource type="Animation" id="Animation_uhebs"]
 length = 0.001
@@ -57,15 +57,33 @@ script = ExtResource("1_uhebs")
 collision_layer = 8
 metadata/_edit_group_ = true
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="enemigo_body_2D"]
+position = Vector2(0, 10)
+lifetime = 0.3
+speed_scale = 0.15
+lifetime_randomness = 1.0
+draw_order = 1
+emission_shape = 3
+emission_rect_extents = Vector2(10, 1)
+gravity = Vector2(0, -980)
+scale_amount_max = 5.0
+color = Color(0, 1, 1, 1)
+
 [node name="Sprite2D" type="Sprite2D" parent="enemigo_body_2D"]
 position = Vector2(1, -1)
 texture = ExtResource("1_sms58")
 region_enabled = true
 region_rect = Rect2(32, 160, 32, 32)
 
-[node name="colision_entorno" type="CollisionShape2D" parent="enemigo_body_2D"]
-position = Vector2(1, -1.5)
-shape = SubResource("RectangleShape2D_uhebs")
+[node name="Area2D" type="Area2D" parent="enemigo_body_2D"]
+position = Vector2(0, -1)
+collision_layer = 0
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="area_vision" type="CollisionShape2D" parent="enemigo_body_2D/Area2D"]
+shape = SubResource("CircleShape2D_uhebs")
+debug_color = Color(0, 0.643666, 0.295785, 0.42)
 
 [node name="Area2D2" type="Area2D" parent="enemigo_body_2D"]
 collision_layer = 0
@@ -75,20 +93,19 @@ metadata/_edit_group_ = true
 [node name="colision_golpe" type="CollisionShape2D" parent="enemigo_body_2D/Area2D2"]
 position = Vector2(2.5, -1.5)
 shape = SubResource("RectangleShape2D_743j8")
+debug_color = Color(0.990201, 0, 0.28126, 0.42)
 
-[node name="Area2D" type="Area2D" parent="enemigo_body_2D"]
-position = Vector2(0, -1)
-collision_layer = 0
-collision_mask = 4
-metadata/_edit_group_ = true
-
-[node name="area_vision" type="CollisionShape2D" parent="enemigo_body_2D/Area2D"]
-shape = SubResource("CircleShape2D_uhebs")
+[node name="colision_entorno" type="CollisionShape2D" parent="enemigo_body_2D"]
+position = Vector2(1, -1.5)
+shape = SubResource("RectangleShape2D_uhebs")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_743j8")
 }
 
+[node name="timer_stunnig" type="Timer" parent="."]
+
 [connection signal="body_entered" from="enemigo_body_2D/Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="enemigo_body_2D/Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="timeout" from="timer_stunnig" to="." method="_on_timer_stunnig_timeout"]

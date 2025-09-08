@@ -54,11 +54,11 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6hw88"]
-radius = 5.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_tsqw1"]
 radius = 6.08276
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6hw88"]
+radius = 5.0
 
 [sub_resource type="Animation" id="Animation_6pvl3"]
 length = 0.001
@@ -110,15 +110,25 @@ sprite_frames = SubResource("SpriteFrames_yap7a")
 animation = &"anim_bola_fuego"
 frame_progress = 0.467837
 
-[node name="colsion_entorno" type="CollisionShape2D" parent="hechizo_body_2D"]
-shape = SubResource("CircleShape2D_6hw88")
-
 [node name="Area2D" type="Area2D" parent="hechizo_body_2D"]
 collision_layer = 0
 collision_mask = 8
 
 [node name="colision_golpe" type="CollisionShape2D" parent="hechizo_body_2D/Area2D"]
 shape = SubResource("CircleShape2D_tsqw1")
+debug_color = Color(0.987372, 0, 0.313729, 0.42)
+
+[node name="colsion_entorno" type="CollisionShape2D" parent="hechizo_body_2D"]
+shape = SubResource("CircleShape2D_6hw88")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="hechizo_body_2D"]
+amount = 15
+lifetime = 0.3
+emission_shape = 2
+emission_sphere_radius = 5.0
+gravity = Vector2(0, 0)
+scale_amount_max = 2.0
+color = Color(1, 0.631373, 0.352941, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../hechizo_body_2D")

@@ -2,6 +2,9 @@
 
 class_name bola_de_fuego extends Node2D
 
+# SEÑALES
+signal impacto_enemigo
+
 ###
 
 # [SOLUCIONADO]
@@ -87,6 +90,7 @@ func _on_area_2d_body_entered(body : Node2D) -> void:
 		entidad_enemigo = body.get_parent()
 		entidad_enemigo.quitar_salud(self._poder_ataque)
 		self._eliminar_al_colisionar()
+		emit_signal("impacto_enemigo")
 
 # NOTE: METODO PRINCIPAL PARA FISICAS
 func _physics_process(delta: float) -> void:

@@ -11,6 +11,10 @@ class_name enemigo extends Node2D
 # BUG: (_detectar_deteminar_colision()) EL ATRIBUTO "name" DE "colision_detectada"
 # EN OCACIONES NO ES ADMINITO Y EXPLOTA EL JUEGO.
 
+# TODO: HABILIDAD PARA INVOCAR ESQUELETOS QUE ATAQUEN A MELÉ AL JUGADOR, ANTES DE
+# INVOCARLOS, DEBE DETERMINAR LOS LUGARES QUE NO TENTAN COLISIONES POSIBLES (ARRIBA,
+# ABAJO, DERECHA E IZQUIERDA).
+
 ###
 
 # ATRIBUTOS
@@ -23,17 +27,19 @@ var _jugador = Node2D
 var _animacion_enemigo : AnimationPlayer
 var _sprite : Sprite2D
 var _nodo_cb : CharacterBody2D
+var _timer_stunning : Timer
 
 # METODOS
 func _ready() -> void:
 	# self._nodo_area = $Area2D
-	self._salud = 80
+	self._salud = 500
 	self._direccion_mov = Vector2()
-	self._velocidad_movimiento = 40
+	self._velocidad_movimiento = 70
 	self._jugador_visto = false
 	self._animacion_enemigo = $AnimationPlayer
 	self._sprite = $enemigo_body_2D/Sprite2D
 	self._nodo_cb = $enemigo_body_2D
+	self._timer_stunning = $timer_stunnig
 
 func get_salud() -> int:
 	return self._salud
@@ -46,9 +52,10 @@ func _perseguir_jugador() -> void:
 		if self._animacion_enemigo.current_animation == "anim_caminar":
 			self._animacion_enemigo.stop()
 			self._animacion_enemigo.seek(0.0)
+			# self._animacion_enemigo.play("")
 		return
-	self._direccion_mov = self._nodo_cb.global_position - self._jugador.global_position
-	self._direccion_mov = self._direccion_mov.normalized() * -1
+	self._direccion_mov = self._jugador.global_position - self._nodo_cb.global_position
+	self._direccion_mov = self._direccion_mov.normalized()
 	# print(self._direccion_mov)
 	self._nodo_cb.velocity = self._direccion_mov * self._velocidad_movimiento
 	self._nodo_cb.move_and_slide()
@@ -81,12 +88,20 @@ func _destruir_entidad() -> void:
 		self.queue_free()
 		print("[LOG] Enemigo muerto")
 
-# NOTE: SI EL ENEMIGO RECIBE DAÑO, QUITA PORCENTAJE DE VIDA
 func quitar_salud(poder_golpe : int) -> void:
 	self._salud -= poder_golpe
+	# NOTE: EVITA QUE SE REDUZCA DEMACIADO LA VELOCIDAD DE MOVIMIENTO
+	if self._velocidad_movimiento > 35:
+		self._velocidad_movimiento = self._velocidad_movimiento / 2
+		if self._timer_stunning.is_stopped():
+			self._timer_stunning.start(0.0)
 	self._destruir_entidad() 
 
-# REVIEW: VER QUE CARAJOS VOY A HACER CON ESTO POR QUE NO ESTA MUY CORRECTOVICH
+# NOTE: REESTABLECE LA VELOCIDAD DE MOVIMIENTO DESPUES DE 1S
+func _on_timer_stunnig_timeout() -> void:
+	self._velocidad_movimiento = 70
+	self._timer_stunning.stop()
+
 # NOTE: SOLO FISICAS
 func _physics_process(delta: float) -> void:
 	self._perseguir_jugador()
@@ -114,5 +129,3 @@ func _physics_process(delta: float) -> void:
 # 		self._rotar_sprite(true)
 # 	if self._direccion_mov.y > 0:
 # 		self._nodo_area.global_position.y += self._velocidad_movimiento/float(2) * delta
-
-
